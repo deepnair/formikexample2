@@ -3,7 +3,7 @@ import {Formik, Form, Field, FormikConfig, FormikValues, useFormikContext} from 
 import {CheckboxWithLabel, TextField} from 'formik-mui'
 import React, { useState } from 'react'
 import { Button, Box, Grid, CircularProgress, Stepper, Step, StepLabel } from '@mui/material'
-import { string } from 'yup'
+import { mixed, number, object, string } from 'yup'
 
 const sleep = async (time: number) => new Promise(acc => setTimeout(acc, time))
 
@@ -25,7 +25,12 @@ const Home: NextPage = () => {
         await sleep(3000)
         console.log(values)
       }}>
-        <FormikStep label='Personal information'>
+        <FormikStep label='Personal information'
+          validationSchema={object({
+            firstName: string().required('You need to give us a First Name'),
+            lastName: string().required('You need to enter a last name, Put in NA if you don\'t have one')
+          })}
+          >
           <Box paddingBottom={2} paddingTop={2}>
             <Field fullWidth name='firstName' label='firstName' component={TextField}/>
           </Box>
@@ -42,7 +47,15 @@ const Home: NextPage = () => {
             <Field fullWidth name='millionaire' type='checkbox' Label={{label:'Are you a millionaire'}} component={CheckboxWithLabel}/>
           </Box>
         </FormikStep>
-        <FormikStep label="Bank Information">
+        <FormikStep label="Bank Information"
+          validationSchema={object({
+            money: mixed().when('millionaire', {
+              is: true,
+              then: number().required('You need to let us know about them millions').min(1_000_000, 'You said you were a millionaire, how come you have less than a million?'),
+              otherwise: number().required('You have to put down how much money you have, I don"t care if it is negative')
+            })
+          })}
+        >
           <Box paddingBottom={2} paddingTop={2}>
             <NameMessage message="Alright, firstName lastName, time to show your cards"/>
           </Box>
