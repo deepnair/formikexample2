@@ -1,34 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Formik Example 2
 
-## Getting Started
+## About
 
-First, run the development server:
+This is a basic Formik Example site that has a multi-step form with validation using yup. The second and third step reflect the First Name and Last Name field values using the useFormikContext hook.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+This is based on the Formik tutorial by Bruno Antunes at [React Multi-Step Form Tutorial: Using Formik, Yup and material-ui](https://www.youtube.com/watch?v=l3NEC4McW3g&t).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Steps
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### File creation and basic form
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+1. Create the next-app with 
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    ```
+    yarn create next-app formikexample2 --typescript 
+    ```
+1. Install the dependencies with 
+    ```
+    yarn add formik formik-mui @mui/material yup @emotion/styled @emotion/react
+    ```
+1. Create the basic Formik form by importing Formik, Form, and Field from 'formik'.
+1. In the Formik component, add initialvalues, onSubmit which are required properties for the component.
+1. Then add the validationSchema using yup which will look as follows:
+    ```ts
+    validationSchema={object({
+            money: mixed().when('millionaire', {
+              is: true,
+              then: number().required('You need to let us know about them millions').min(1_000_000, 'You said you were a millionaire, how come you have less than a million?'),
+              otherwise: number().required('You have to put down how much money you have, I don"t care if it is negative')
+            })
+          })}
+    ```
+    What this does is you import 'object' from yup which states that the 'money' field will require the value to be greater than a million if the 'millionaire' field is true. (The 1_000_000 notation for numbers is valid and helps large numbers be easily discernable in code.)
+1. Each Field will have a name, label, type, and component property. The component property takes either a TextField or CheckboxWithLabel (both from formik-mui). It will look as follows:
+    ```jsx
+    <Field fullWidth name='lastName' label='lastName' component={TextField}/>
+    <Field name='millionaire' type='checkbox' Label={{label:'Are you a millionaire'}} component={CheckboxWithLabel}/>
+    ```
+    Note that the Label in checkbox label is different, it is just that the way the CheckboxWithLabel component is labeled is this way in formik-mui from where CheckboxWithLabel is imported.
