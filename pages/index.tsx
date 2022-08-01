@@ -44,7 +44,7 @@ const Home: NextPage = () => {
             <NameMessage message="Well firstName lastName, it's time for the moment of truth."/>
           </Box>
           <Box paddingBottom={2} paddingTop={2}>
-            <Field fullWidth name='millionaire' type='checkbox' Label={{label:'Are you a millionaire'}} component={CheckboxWithLabel}/>
+            <Field name='millionaire' type='checkbox' Label={{label:'Are you a millionaire'}} component={CheckboxWithLabel}/>
           </Box>
         </FormikStep>
         <FormikStep label="Bank Information"
