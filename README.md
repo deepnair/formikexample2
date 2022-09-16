@@ -259,7 +259,7 @@ Objective: Show the steps with their names on the top in a material UI stepper. 
 
 1. Within Formik, to access the values there is a built-in hook in Formik known as useFormikContext, it must be called in a component that is below the Formik component. To do this we import useFormikContext from formik.
     ```ts
-        import {Formil, Form, Field, FormikConfig, FormikValues, useFormikContext} from 'formik'
+        import {Formik, Form, Field, FormikConfig, FormikValues, useFormikContext} from 'formik'
     ```
 1. Then we created a NameMessage component that uses the FormikContext as follows:
     ```jsx
